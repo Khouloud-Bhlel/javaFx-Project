@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="438.0" prefWidth="757.0" stylesheets="@LocationCrud.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LocationCrud">
+<AnchorPane prefHeight="438.0" prefWidth="757.0" stylesheets="@style/LocationCrud.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LocationCrud">
    <children>
-      <ListView fx:id="locationLV" layoutX="296.0" layoutY="131.0" prefHeight="200.0" prefWidth="490.0" />
-      <TextField fx:id="nameTF" layoutX="102.0" layoutY="106.0" />
-      <Label layoutX="36.0" layoutY="110.0" text="name" />
-      <Label layoutX="36.0" layoutY="350.0" text="capacity" />
-      <Label layoutX="22.0" layoutY="181.0" text="adress" />
-      <TextArea fx:id="adressTF" layoutX="102.0" layoutY="173.0" prefHeight="107.0" prefWidth="149.0" wrapText="true" />
-      <Button fx:id="addButton" layoutX="102.0" layoutY="399.0" mnemonicParsing="false" onAction="#addlocation" text="add" />
-      <Button fx:id="showButton" layoutX="635.0" layoutY="387.0" mnemonicParsing="false" onAction="#showevents" text="show events" />
-      <Button fx:id="deleteButton" layoutX="466.0" layoutY="397.0" mnemonicParsing="false" onAction="#deletelocation" text="delete" />
-      <Button fx:id="mdifyButton" layoutX="336.0" layoutY="397.0" mnemonicParsing="false" onAction="#modifylocation" text="modify" />
-      <TextField fx:id="capacityTF" layoutX="100.0" layoutY="346.0" />
+      <!-- Logo Image -->
+      <ImageView fitHeight="117.0" fitWidth="171.0" layoutX="16.0" layoutY="-5.0" preserveRatio="true">
+         <image>
+            <Image url="@photos/logo_inverted.png" />
+         </image>
+      </ImageView>
+
+      <!-- Title Label -->
+      <Label layoutX="235.0" layoutY="34.0" styleClass="heading" text="LOCATION MANAGEMENT" />
+
+      <!-- List of Locations -->
+      <ListView fx:id="locationLV" layoutX="331.0" layoutY="146.0" prefHeight="208.0" prefWidth="417.0" styleClass="meal-card" />
+      <!-- List of Locations Title -->
+      <Label layoutX="368.0" layoutY="112.0" styleClass="subheading" text="LIST OF LOCATIONS" />
+      <!-- Name Field -->
+      <Label layoutX="17.0" layoutY="123.0" styleClass="subheading" text="NAME:" />
+      <TextField fx:id="nameTF" layoutX="131.0" layoutY="113.0" prefHeight="42.0" prefWidth="171.0" styleClass="text-field" />
+
+
+      <!-- Address Field -->
+      <Label layoutX="15.0" layoutY="219.0" styleClass="subheading" text="ADDRESS:" />
+      <TextArea fx:id="adressTF" layoutX="131.0" layoutY="177.0" prefHeight="107.0" prefWidth="171.0" styleClass="text-area" wrapText="true" />
+
+      <!-- Capacity Field -->
+      <Label layoutX="12.0" layoutY="328.0" styleClass="subheading" text="CAPACITY:" />
+      <TextField fx:id="capacityTF" layoutX="131.0" layoutY="307.0" prefHeight="42.0" prefWidth="171.0" styleClass="text-field" />
+
+      <!-- Buttons -->
+      <Button fx:id="addButton" layoutX="21.0" layoutY="372.0" mnemonicParsing="false" onAction="#addlocation" styleClass="button" text="ADD" />
+      <Button fx:id="showButton" layoutX="456.0" layoutY="372.0" mnemonicParsing="false" onAction="#showevents" styleClass="button" text="SHOW EVENTS" />
+      <Button fx:id="deleteButton" layoutX="220.0" layoutY="372.0" mnemonicParsing="false" onAction="#deletelocation" styleClass="button" text="DELETE" />
+      <Button fx:id="mdifyButton" layoutX="108.0" layoutY="372.0" mnemonicParsing="false" onAction="#modifylocation" styleClass="button" text="MODIFY" />
    </children>
 </AnchorPane>
