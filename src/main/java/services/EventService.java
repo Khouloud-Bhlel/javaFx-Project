@@ -95,4 +95,24 @@ public class EventService implements IService<Event> {
         }
         return events;
     }
+
+    // Add this method to fetch an event by its ID
+    public Event readById(int id) throws SQLException {
+        String query = "SELECT * FROM event WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(query)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Event(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("description"),
+                            rs.getInt("location_id"),
+                            rs.getDate("date").toLocalDate()
+                    );
+                }
+            }
+        }
+        return null; // Return null if no event is found with the given ID
+    }
 }

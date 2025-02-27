@@ -20,6 +20,7 @@ import services.EventService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class EventCrud {
 
@@ -30,7 +31,7 @@ public class EventCrud {
     private TextArea descriptionTF;
 
     @FXML
-    private ListView<Event> eventLV;
+    private ListView<String> eventLV; // ListView to display event details as strings
 
     @FXML
     private TextField nameTF;
@@ -39,6 +40,17 @@ public class EventCrud {
 
     public void setLocation(Location location) {
         this.location = location;
+        refreshEventListView(); // Refresh the list when the location is set
+    }
+
+    @FXML
+    void initialize() {
+        // Add a listener to the ListView to load event data when an item is selected
+        eventLV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                loadEventData(newValue);
+            }
+        });
     }
 
     @FXML
@@ -54,6 +66,7 @@ public class EventCrud {
                 EventService eventService = new EventService();
                 eventService.create(newEvent);
                 refreshEventListView();
+                clearForm(); // Clear the form after adding an event
             } catch (SQLException e1) {
                 showErrorAlert("Error adding event: " + e1.getMessage());
             }
@@ -62,12 +75,19 @@ public class EventCrud {
 
     @FXML
     void deleteevent(ActionEvent event) {
-        Event selectedEvent = eventLV.getSelectionModel().getSelectedItem();
-        if (selectedEvent != null) {
+        String selectedEventString = eventLV.getSelectionModel().getSelectedItem();
+        if (selectedEventString != null) {
             try {
                 EventService eventService = new EventService();
-                eventService.delete(selectedEvent);
-                refreshEventListView();
+                int eventId = extractEventIdFromString(selectedEventString);
+                Event selectedEvent = eventService.readById(eventId);
+                if (selectedEvent != null) {
+                    eventService.delete(selectedEvent);
+                    refreshEventListView();
+                    clearForm(); // Clear the form after deleting an event
+                } else {
+                    showErrorAlert("Event not found.");
+                }
             } catch (SQLException e1) {
                 showErrorAlert("Error deleting event: " + e1.getMessage());
             }
@@ -78,15 +98,22 @@ public class EventCrud {
 
     @FXML
     void modifyevent(ActionEvent event) {
-        Event selectedEvent = eventLV.getSelectionModel().getSelectedItem();
-        if (selectedEvent != null && validateForm()) {
-            selectedEvent.setName(nameTF.getText());
-            selectedEvent.setDescription(descriptionTF.getText());
-            selectedEvent.setDate(dateDP.getValue());
+        String selectedEventString = eventLV.getSelectionModel().getSelectedItem();
+        if (selectedEventString != null && validateForm()) {
             try {
                 EventService eventService = new EventService();
-                eventService.update(selectedEvent);
-                refreshEventListView();
+                int eventId = extractEventIdFromString(selectedEventString);
+                Event selectedEvent = eventService.readById(eventId);
+                if (selectedEvent != null) {
+                    selectedEvent.setName(nameTF.getText());
+                    selectedEvent.setDescription(descriptionTF.getText());
+                    selectedEvent.setDate(dateDP.getValue());
+                    eventService.update(selectedEvent);
+                    refreshEventListView();
+                    clearForm(); // Clear the form after modifying an event
+                } else {
+                    showErrorAlert("Event not found.");
+                }
             } catch (SQLException e1) {
                 showErrorAlert("Error updating event: " + e1.getMessage());
             }
@@ -113,10 +140,41 @@ public class EventCrud {
     private void refreshEventListView() {
         try {
             ObservableList<Event> events = FXCollections.observableArrayList(new EventService().readByLocationId(location.getId()));
-            eventLV.setItems(events);
+            ObservableList<String> eventStrings = FXCollections.observableArrayList();
+
+            // Convert Event objects to Strings with event name, description, and remaining time
+            for (Event event : events) {
+                String remaining = remainingTime(event.getDate());
+                eventStrings.add(event.getId() + ": " + event.getName() + " - " + event.getDescription() + " - " + remaining);
+            }
+
+            eventLV.setItems(eventStrings);
         } catch (SQLException e) {
             showErrorAlert("Error loading events: " + e.getMessage());
         }
+    }
+
+    private void loadEventData(String eventString) {
+        try {
+            int eventId = extractEventIdFromString(eventString);
+            EventService eventService = new EventService();
+            Event selectedEvent = eventService.readById(eventId);
+
+            if (selectedEvent != null) {
+                // Load the selected event's data into the input fields
+                nameTF.setText(selectedEvent.getName());
+                descriptionTF.setText(selectedEvent.getDescription());
+                dateDP.setValue(selectedEvent.getDate());
+            }
+        } catch (SQLException e) {
+            showErrorAlert("Error loading event data: " + e.getMessage());
+        }
+    }
+
+    private void clearForm() {
+        nameTF.clear();
+        descriptionTF.clear();
+        dateDP.setValue(null);
     }
 
     private boolean validateForm() {
@@ -139,13 +197,39 @@ public class EventCrud {
         alert.showAndWait();
     }
 
-    public void setEvents(ObservableList<Event> obs) {
-        eventLV.setItems(obs);
+    private String remainingTime(LocalDate eventDate) {
+        LocalDate today = LocalDate.now();
+        long daysLeft = ChronoUnit.DAYS.between(today, eventDate);
+
+        if (daysLeft > 0) {
+            return daysLeft + " days left";
+        } else if (daysLeft == 0) {
+            return "Today";
+        } else {
+            return "Event passed";
+        }
+    }
+
+    private int extractEventIdFromString(String eventString) {
+        // Assuming the event string is formatted as "id: name - description - remaining time"
+        return Integer.parseInt(eventString.split(":")[0].trim());
     }
 
     public void setLocationId(int id) {
         location = new Location();
         location.setId(id);
         refreshEventListView();
+    }
+
+    public void setEvents(ObservableList<Event> events) {
+        ObservableList<String> eventStrings = FXCollections.observableArrayList();
+
+        // Convert Event objects to Strings with event name, description, and remaining time
+        for (Event event : events) {
+            String remaining = remainingTime(event.getDate());
+            eventStrings.add(event.getId() + ": " + event.getName() + " - " + event.getDescription() + " - " + remaining);
+        }
+
+        eventLV.setItems(eventStrings);
     }
 }

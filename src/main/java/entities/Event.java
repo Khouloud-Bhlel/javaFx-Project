@@ -76,8 +76,10 @@ public class Event {
     @Override
     public String toString() {
         return String.format(
-                "Name: %-20.20s%nDescription:%n%s%nLocation ID: %-10d%nDate: %-20s",
-                name.replaceAll("(?<=\\G.{" + 20 + "})", "\n"), description.replaceAll("(?<=\\G.{" + 100 + "})", "\n"), locationId, date.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
+                "Name: %-20.20s%nDescription:%n%s%nDate: %-20s",
+                name.replaceAll("(?<=\\G.{" + 20 + "})", "\n"),
+                description.replaceAll("(?<=\\G.{" + 100 + "})", "\n"),
+                date.format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
         );
     }
 
