@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -18,10 +19,12 @@ import javafx.stage.Stage;
 import services.EventService;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
-public class EventCrud {
+public class EventCrud implements Initializable {
 
     @FXML
     private DatePicker dateDP;
@@ -39,6 +42,7 @@ public class EventCrud {
 
     public void setLocation(Location location) {
         this.location = location;
+        refreshEventListView(); // Refresh the ListView when the location is set
     }
 
     @FXML
@@ -54,6 +58,7 @@ public class EventCrud {
                 EventService eventService = new EventService();
                 eventService.create(newEvent);
                 refreshEventListView();
+                clearFields(); // Clear fields after adding an event
             } catch (SQLException e1) {
                 showErrorAlert("Error adding event: " + e1.getMessage());
             }
@@ -68,6 +73,7 @@ public class EventCrud {
                 EventService eventService = new EventService();
                 eventService.delete(selectedEvent);
                 refreshEventListView();
+                clearFields(); // Clear fields after deleting an event
             } catch (SQLException e1) {
                 showErrorAlert("Error deleting event: " + e1.getMessage());
             }
@@ -77,16 +83,31 @@ public class EventCrud {
     }
 
     @FXML
-    void modifyevent(ActionEvent event) {
+    void afyevent(ActionEvent event) {
         Event selectedEvent = eventLV.getSelectionModel().getSelectedItem();
         if (selectedEvent != null && validateForm()) {
+            // Debug: Print the selected event's current values
+            System.out.println("Before update:");
+            System.out.println("Name: " + selectedEvent.getName());
+            System.out.println("Description: " + selectedEvent.getDescription());
+            System.out.println("Date: " + selectedEvent.getDate());
+
+            // Update the selected event with the new values from the form
             selectedEvent.setName(nameTF.getText());
             selectedEvent.setDescription(descriptionTF.getText());
             selectedEvent.setDate(dateDP.getValue());
+
+            // Debug: Print the selected event's updated values
+            System.out.println("After update:");
+            System.out.println("Name: " + selectedEvent.getName());
+            System.out.println("Description: " + selectedEvent.getDescription());
+            System.out.println("Date: " + selectedEvent.getDate());
+
             try {
                 EventService eventService = new EventService();
-                eventService.update(selectedEvent);
-                refreshEventListView();
+                eventService.update(selectedEvent); // Save the updated event to the database
+                refreshEventListView(); // Refresh the ListView to reflect the changes
+                clearFields(); // Clear the form after modification
             } catch (SQLException e1) {
                 showErrorAlert("Error updating event: " + e1.getMessage());
             }
@@ -148,4 +169,45 @@ public class EventCrud {
         location.setId(id);
         refreshEventListView();
     }
+
+    private void populateFields(Event event) {
+        nameTF.setText(event.getName());
+        descriptionTF.setText(event.getDescription());
+        dateDP.setValue(event.getDate());
+
+
+    }
+
+    private void selectEvent(Event selectedEvent) {
+        if (selectedEvent != null) {
+            populateFields(selectedEvent); // Populate fields with the selected event's data
+        } else {
+            clearFields(); // Clear fields if no event is selected
+        }
+    }
+
+    // Method to clear fields
+    private void clearFields() {
+        nameTF.clear();
+        descriptionTF.clear();
+        dateDP.setValue(null);
+
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("Initialize method called."); // Debug statement
+
+        if (eventLV == null) {
+            System.out.println("eventLV is null. Check FXML binding."); // Debug statement
+        } else {
+            // Add a listener to the ListView to handle selection changes
+            eventLV.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                System.out.println("Event selected: " + (newSelection != null ? newSelection.getName() : "null")); // Debug statement
+                selectEvent(newSelection); // Call the dedicated selection function
+            });
+        }
+    }
 }
+

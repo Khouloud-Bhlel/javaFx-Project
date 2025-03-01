@@ -33,6 +33,7 @@ public class EventService implements IService<Event> {
         }
     }
 
+
     @Override
     public void update(Event event) throws SQLException {
         String query = "UPDATE event SET name = ?, description = ?, location_id = ?, date = ? WHERE id = ?";
