@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.CalendarViewController"
+            prefWidth="800" prefHeight="600"
+            style="-fx-padding: 20;">
+
+    <VBox spacing="20" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
+        <!-- Calendar Header -->
+        <HBox spacing="15" alignment="CENTER">
+            <Button fx:id="prevMonthBtn" text="◀" style="-fx-font-weight: bold;"/>
+            <ComboBox fx:id="monthCombo" prefWidth="120"/>
+            <ComboBox fx:id="yearCombo" prefWidth="80"/>
+            <Button fx:id="nextMonthBtn" text="▶" style="-fx-font-weight: bold;"/>
+        </HBox>
+
+        <!-- Calendar Grid -->
+        <GridPane fx:id="calendarGrid" gridLinesVisible="true"
+                  hgap="1" vgap="1" style="-fx-border-color: gray;">
+
+            <!-- Day Names Header -->
+            <columnConstraints>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+            </columnConstraints>
+        </GridPane>
+
+        <!-- Event Details -->
+        <VBox spacing="10">
+            <Label text="Events for Selected Date:" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+            <ListView fx:id="eventList" prefHeight="150"/>
+        </VBox>
+    </VBox>
+</AnchorPane>

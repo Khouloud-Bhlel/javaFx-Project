@@ -40,6 +40,10 @@ public class LocationCrud {
     private Button switchAccountButton;
 
     @FXML
+
+    private Button AdminAccountButton;
+    @FXML
+
     private Button mdifyButton;
 
     private Location location; // Holds the current location
@@ -98,6 +102,24 @@ public class LocationCrud {
         }
     }
 
+    @FXML
+    private void adminAccount() {
+        try {
+            // Load the UserDashboard interface
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Admin-dashboard.fxml"));
+            Parent adminDashboardPane = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) AdminAccountButton.getScene().getWindow();
+
+            // Set the new scene
+            Scene scene = new Scene(adminDashboardPane);
+            stage.setScene(scene);
+            stage.setTitle("admin Dashboard");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     void showevents(ActionEvent event) {
         Location selectedLocation = locationLV.getSelectionModel().getSelectedItem();
