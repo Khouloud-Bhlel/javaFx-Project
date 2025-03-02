@@ -21,14 +21,6 @@
          </font>
       </Label>
 
-      <!-- Switch Account Button -->
-      <Button fx:id="switchAccountButton"
-              layoutX="600.0"
-              layoutY="10.0"
-              text="Switch to User"
-              onAction="#switchAccount"
-              styleClass="button" />
-
       <!-- Subtitle for the List of Events -->
       <Label layoutX="550.0" layoutY="100.0" styleClass="subheading" text="LIST OF EVENTS">
          <font>
