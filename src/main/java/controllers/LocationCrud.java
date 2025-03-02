@@ -40,8 +40,10 @@ public class LocationCrud {
     private Button switchAccountButton;
 
     @FXML
+
     private Button AdminAccountButton;
     @FXML
+
     private Button mdifyButton;
 
     private Location location; // Holds the current location
