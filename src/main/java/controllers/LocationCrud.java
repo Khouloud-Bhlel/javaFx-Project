@@ -1,26 +1,26 @@
 package controllers;
 
-import entities.Event;
 import entities.Location;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import entities.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import services.LocationService;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 
 public class LocationCrud {
 
@@ -36,58 +36,88 @@ public class LocationCrud {
     @FXML
     private TextField nameTF;
 
+    @FXML
+    private Button switchAccountButton;
+
+    @FXML
+    private Button AdminAccountButton;
+    @FXML
+    private Button mdifyButton;
+
+    private Location location; // Holds the current location
+
     private final LocationService locationService = new LocationService();
 
     @FXML
-    void addlocation(ActionEvent event) {
-        if (validateForm()) {
-            Location location = new Location(
-                nameTF.getText(),
-                adressTF.getText(),
-                Integer.parseInt(capacityTF.getText())
-            );
-            try {
-                locationService.create(location);
-                refreshLocationListView();
-            } catch (SQLException e) {
-                showErrorAlert("Error adding location: " + e.getMessage());
-            }
+    public void initialize() {
+        try {
+            // Load all locations
+            List<Location> locations = locationService.readAll();
+            locationLV.getItems().setAll(locations);
+
+            // Add listener to location list
+            locationLV.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    populateFields(newSelection);
+                }
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to populate fields with location data
+    private void populateFields(Location location) {
+        nameTF.setText(location.getName());
+        adressTF.setText(location.getAddress());
+        capacityTF.setText(String.valueOf(location.getCapacity()));
+    }
+
+    // Method to set the location
+    public void setLocation(Location location) {
+        this.location = location;
+        if (location != null) {
+            populateFields(location);
         }
     }
 
     @FXML
-    void deletelocation(ActionEvent event) {
-        Location selectedLocation = locationLV.getSelectionModel().getSelectedItem();
-        if (selectedLocation != null) {
-            try {
-                locationService.delete(selectedLocation);
-                refreshLocationListView();
-            } catch (SQLException e) {
-                showErrorAlert("Error deleting location: " + e.getMessage());
-            }
-        } else {
-            showErrorAlert("No location selected for deletion.");
+    private void switchAccount() {
+        try {
+            // Load the UserDashboard interface
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserDashboard.fxml"));
+            Parent userDashboardPane = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) switchAccountButton.getScene().getWindow();
+
+            // Set the new scene
+            Scene scene = new Scene(userDashboardPane);
+            stage.setScene(scene);
+            stage.setTitle("User Dashboard");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
-    void modifylocation(ActionEvent event) {
-        Location selectedLocation = locationLV.getSelectionModel().getSelectedItem();
-        if (selectedLocation != null && validateForm()) {
-            selectedLocation.setName(nameTF.getText());
-            selectedLocation.setAddress(adressTF.getText());
-            selectedLocation.setCapacity(Integer.parseInt(capacityTF.getText()));
-            try {
-                locationService.update(selectedLocation);
-                refreshLocationListView();
-            } catch (SQLException e) {
-                showErrorAlert("Error updating location: " + e.getMessage());
-            }
-        } else {
-            showErrorAlert("No location selected for modification or invalid input.");
+    private void adminAccount() {
+        try {
+            // Load the UserDashboard interface
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Admin-dashboard.fxml"));
+            Parent adminDashboardPane = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) AdminAccountButton.getScene().getWindow();
+
+            // Set the new scene
+            Scene scene = new Scene(adminDashboardPane);
+            stage.setScene(scene);
+            stage.setTitle("admin Dashboard");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
     @FXML
     void showevents(ActionEvent event) {
         Location selectedLocation = locationLV.getSelectionModel().getSelectedItem();
@@ -116,12 +146,51 @@ public class LocationCrud {
     }
 
     @FXML
-    void initialize() {
-        assert adressTF != null : "fx:id=\"adressTF\" was not injected: check your FXML file 'LocationCrud.fxml'.";
-        assert capacityTF != null : "fx:id=\"capacityTF\" was not injected: check your FXML file 'LocationCrud.fxml'.";
-        assert locationLV != null : "fx:id=\"locationLV\" was not injected: check your FXML file 'LocationCrud.fxml'.";
-        assert nameTF != null : "fx:id=\"nameTF\" was not injected: check your FXML file 'LocationCrud.fxml'.";
-        refreshLocationListView();
+    private void addlocation() {
+        if (validateForm()) {
+            Location newLocation = new Location(
+                    nameTF.getText(),
+                    adressTF.getText(),
+                    Integer.parseInt(capacityTF.getText())
+            );
+            try {
+                locationService.create(newLocation);
+                refreshLocationListView();
+                clearFields();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void deletelocation() {
+        Location selectedLocation = locationLV.getSelectionModel().getSelectedItem();
+        if (selectedLocation != null) {
+            try {
+                locationService.delete(selectedLocation);
+                refreshLocationListView();
+                clearFields();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void modifylocation() {
+        Location selectedLocation = locationLV.getSelectionModel().getSelectedItem();
+        if (selectedLocation != null && validateForm()) {
+            selectedLocation.setName(nameTF.getText());
+            selectedLocation.setAddress(adressTF.getText());
+            selectedLocation.setCapacity(Integer.parseInt(capacityTF.getText()));
+            try {
+                locationService.update(selectedLocation);
+                refreshLocationListView();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private boolean validateForm() {
@@ -149,30 +218,18 @@ public class LocationCrud {
             List<Location> locations = locationService.readAll();
             locationLV.getItems().setAll(locations);
         } catch (SQLException e) {
-            showErrorAlert("Error loading locations: " + e.getMessage());
+            e.printStackTrace();
         }
+    }
+
+    private void clearFields() {
+        nameTF.clear();
+        adressTF.clear();
+        capacityTF.clear();
     }
 
     private void showErrorAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    public void setEventsForLocation(Location location) {
-        try {
-            List<Event> events = locationService.readAllForLocation(location);
-            locationLV.getSelectionModel().select(location);
-            locationLV.scrollTo(location);
-            nameTF.setText(location.getName());
-            adressTF.setText(location.getAddress());
-            capacityTF.setText(String.valueOf(location.getCapacity()));
-        } catch (SQLException e) {
-            showErrorAlert("Error loading events for location: " + e.getMessage());
-        }
-    }
-
-    public void setLocation(Location location) {
-        setEventsForLocation(location);
+        // Implement an error alert (e.g., using JavaFX Alert)
+        System.err.println(message);
     }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane prefHeight="500.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.UserDashboardController"
+            stylesheets="@style/UserDashboard.css">
+
+    <top>
+        <ToolBar>
+            <Button text="Switch to Admin" onAction="#switchAccount" styleClass="nav-button"/>
+            <Button text="View Calendar" onAction="#showCalendarView" styleClass="nav-button"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.3">
+            <!-- Left Side: List of Locations -->
+            <VBox styleClass="meal-card">
+                <Label text="Locations" styleClass="subheading"/>
+                <ListView fx:id="locationLV" styleClass="list-view"/>
+            </VBox>
+
+            <!-- Right Side: List of Events and Participation Form -->
+            <VBox styleClass="meal-card">
+                <Label text="Events" styleClass="subheading"/>
+                <ListView fx:id="eventLV" styleClass="list-view"/>
+                <fx:include fx:id="participationForm" source="ParticipationForm.fxml"/>
+            </VBox>
+        </SplitPane>
+    </center>
+</BorderPane>
