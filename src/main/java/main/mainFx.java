@@ -18,18 +18,18 @@ public class mainFx extends Application {
 
     public void showMainDashboard() {
         try {
+            // Ensure the path matches the FXML's location in resources
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserDashboard.fxml"));
             Parent root = loader.load();
 
-            // Set up main window
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/style/main.css").toExternalForm());
+            // Verify the CSS path as well
+            scene.getStylesheets().add(getClass().getResource("/style/UserDashboard.css").toExternalForm());
 
-            primaryStage.setTitle("QuickMove - Carpool System");
+            primaryStage.setTitle("User Dashbord");
             primaryStage.setScene(scene);
             primaryStage.setMaximized(true);
             primaryStage.show();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,7 +57,7 @@ public class mainFx extends Application {
 
     private void showScene(Parent root, String title) {
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/style/main.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/style/LocationCrud.css").toExternalForm());
 
         Stage stage = new Stage();
         stage.setTitle(title);

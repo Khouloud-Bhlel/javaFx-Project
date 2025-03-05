@@ -9,7 +9,8 @@
 
     <top>
         <ToolBar>
-            <Button text="Switch to Admin" onAction="#switchAccount" styleClass="nav-button"/>
+            <Button text="Admin account" onAction="#switchAccount" styleClass="nav-button"/>
+
             <Button text="View Calendar" onAction="#showCalendarView" styleClass="nav-button"/>
         </ToolBar>
     </top>
