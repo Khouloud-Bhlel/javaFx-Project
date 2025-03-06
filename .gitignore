@@ -2,7 +2,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-tokens/StoredCredential
+
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -34,6 +34,6 @@ build/
 /src/main/resources/client_secret.json
 ### VS Code ###
 .vscode/
-
+/tokens
 ### Mac OS ###
 .DS_Store
