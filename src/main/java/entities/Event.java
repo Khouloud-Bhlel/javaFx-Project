@@ -2,6 +2,8 @@ package entities;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Event {
     private int eventId;
@@ -85,5 +87,25 @@ public class Event {
 
     public int getId() {
         return eventId;
+    }
+    public String getRemainingTime() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime eventDateTime = this.date.atStartOfDay(); // Assuming the event starts at midnight
+
+        if (now.isAfter(eventDateTime)) {
+            return "Event has ended";
+        }
+
+        // Calculate the duration between now and the event date
+        Duration duration = Duration.between(now, eventDateTime);
+
+        // Extract days, hours, minutes, and seconds
+        long days = duration.toDays();
+        long hours = duration.toHours() % 24;
+        long minutes = duration.toMinutes() % 60;
+        long seconds = duration.getSeconds() % 60;
+
+        // Format the remaining time as a string
+        return String.format("%d days, %02d:%02d:%02d", days, hours, minutes, seconds);
     }
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.ChatbotInterfaceController"
+      stylesheets="@style/UserDashboard.css"
+      styleClass="form-container" spacing="10">
+    <Label text="Chatbot Interface" styleClass="heading" />
+
+    <!-- Chatbot Messages Area -->
+    <ScrollPane styleClass="chatbot-scroll-pane">
+        <VBox fx:id="chatbotMessages" styleClass="chatbot-messages" />
+    </ScrollPane>
+
+    <!-- User Input Area -->
+    <HBox spacing="10">
+        <TextField fx:id="userInputTF" styleClass="text-field" promptText="Type your message here..." />
+        <Button text="Send" styleClass="button" onAction="#handleUserInput" />
+    </HBox>
+
+    <!-- Participation Form (Hidden by Default) -->
+    <VBox fx:id="participationForm" styleClass="participation-form" visible="false">
+        <Label text="Please provide your details to participate:" styleClass="subheading" />
+        <TextField fx:id="fullNameTF" styleClass="text-field" promptText="Full Name" />
+        <TextField fx:id="emailTF" styleClass="text-field" promptText="Email Address" />
+        <TextField fx:id="phoneTF" styleClass="text-field" promptText="Phone Number" />
+        <TextField fx:id="locationTF" styleClass="text-field" promptText="Your Location" />
+        <Button text="Submit" styleClass="button" onAction="#submitParticipation" />
+    </VBox>
+</VBox>

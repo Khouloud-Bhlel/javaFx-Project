@@ -1,34 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane prefHeight="500.0" prefWidth="800.0"
-            xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.UserDashboardController"
-            stylesheets="@style/UserDashboard.css">
+
+<BorderPane prefHeight="600.0" prefWidth="900.0" styleClass="main-container" stylesheets="@style/UserDashboard.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserDashboardController">
 
     <top>
-        <ToolBar>
-            <Button text="Admin account" onAction="#switchAccount" styleClass="nav-button"/>
+        <VBox spacing="0" styleClass="header-container">
+            <!-- Main Header with Title -->
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="main-header">
+                <padding><Insets bottom="15" left="20" right="20" top="15" /></padding>
 
-            <Button text="View Calendar" onAction="#showCalendarView" styleClass="nav-button"/>
-        </ToolBar>
+                <Label styleClass="app-title" text="EventMaster" />
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Label styleClass="user-name" text="User Dashboard" />
+            </HBox>
+
+            <!-- Navigation Bar -->
+            <ToolBar styleClass="navigation-bar">
+                <Button styleClass="nav-button, nav-button-active" text="Dashboard" />
+                <Button onAction="#switchAccount" styleClass="nav-button" text="Admin Account" />
+                <Button onAction="#showCalendarView" styleClass="nav-button" text="Calendar" />
+            </ToolBar>
+        </VBox>
     </top>
 
     <center>
-        <SplitPane dividerPositions="0.3">
-            <!-- Left Side: List of Locations -->
-            <VBox styleClass="meal-card">
-                <Label text="Locations" styleClass="subheading"/>
-                <ListView fx:id="locationLV" styleClass="list-view"/>
-            </VBox>
+        <VBox styleClass="content-container">
+            <padding><Insets bottom="15" left="15" right="15" top="15" /></padding>
 
-            <!-- Right Side: List of Events and Participation Form -->
-            <VBox styleClass="meal-card">
-                <Label text="Events" styleClass="subheading"/>
-                <ListView fx:id="eventLV" styleClass="list-view"/>
-                <fx:include fx:id="participationForm" source="ParticipationForm.fxml"/>
-            </VBox>
-        </SplitPane>
+            <!-- Welcome Banner -->
+            <HBox alignment="CENTER_LEFT" prefHeight="11.0" prefWidth="870.0" styleClass="welcome-banner">
+                <padding><Insets bottom="20" left="25" right="25" top="20" /></padding>
+                <VBox spacing="5">
+                    <Label styleClass="welcome-title" text="Hi," />
+                    <Label styleClass="welcome-subtitle" text="Discover events and manage your favorite locations" />
+                </VBox>
+            </HBox>
+
+            <!-- Main Content Split Pane -->
+            <SplitPane dividerPositions="0.2" styleClass="content-split-pane" VBox.vgrow="ALWAYS">
+                <!-- Left Side: Chatbot Interface -->
+                <VBox prefHeight="334.0" prefWidth="493.0" styleClass="panel, chatbot-panel">
+                    <HBox alignment="CENTER_LEFT" styleClass="panel-header">
+                        <Label styleClass="panel-title" text="Event Assistant" />
+                        <Region HBox.hgrow="ALWAYS" />
+                    </HBox>
+                    <fx:include fx:id="chatbotInterface" source="ChatbotInterface.fxml" />
+                </VBox>
+
+                <!-- Right Side: Split for Events and Locations -->
+                <VBox spacing="10" styleClass="right-panels-container">
+                    <!-- Events Panel -->
+                    <VBox styleClass="panel, events-panel" VBox.vgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="655.0" styleClass="panel-header">
+                            <Label styleClass="panel-title" text="Upcoming Events" />
+                            <Region prefHeight="0.0" prefWidth="442.0" HBox.hgrow="ALWAYS" />
+                        </HBox>
+
+                        <!-- Event List -->
+                        <ListView fx:id="eventLV" prefHeight="237.0" prefWidth="708.0" styleClass="event-list-view" VBox.vgrow="ALWAYS" />
+                    </VBox>
+
+                    <!-- Locations Panel -->
+                    <VBox prefHeight="201.0" prefWidth="735.0" spacing="15" styleClass="panel, locations-panel">
+                        <HBox alignment="CENTER_LEFT" styleClass="panel-header">
+                            <Label styleClass="panel-title" text="My Locations" />
+                            <Region HBox.hgrow="ALWAYS" />
+                        </HBox>
+
+
+
+                        <!-- Location List -->
+                        <ListView fx:id="locationLV" prefHeight="129.0" prefWidth="226.0" styleClass="location-list-view" VBox.vgrow="ALWAYS" />
+                    </VBox>
+                </VBox>
+            </SplitPane>
+        </VBox>
     </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT" styleClass="footer">
+            <padding><Insets bottom="8" left="15" right="15" top="8" /></padding>
+            <Label styleClass="footer-text" text="© 2025 EventMaster" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label styleClass="footer-version" text="v1.0.0" />
+        </HBox>
+    </bottom>
 </BorderPane>

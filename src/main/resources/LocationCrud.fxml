@@ -22,9 +22,6 @@
       </Label>
 
 
-      <!-- Switch Account Button -->
-      <Button fx:id="AdminAccountButton" layoutX="520.0" layoutY="20.0" onAction="#adminAccount" styleClass="button" text="Switch to Admin" />
-
       <!-- List of Locations -->
       <Label layoutX="500.0" layoutY="100.0" styleClass="subheading" text="LIST OF LOCATIONS">
          <font>

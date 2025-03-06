@@ -1,52 +1,224 @@
-/* ==================== User Dashboard ==================== */
-.list-view {
+/* UserDashboard.css */
+
+/* Base Styles and Colors */
+* {
+    -fx-primary: #3498db;
+    -fx-primary-dark: #2980b9;
+    -fx-secondary: #2c3e50;
+    -fx-light-grey: #f5f5f5;
+    -fx-mid-grey: #e0e0e0;
+    -fx-dark-grey: #757575;
+}
+
+.main-container {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Header Styling */
+.header-container {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.main-header {
+    -fx-background-color: white;
+}
+
+.app-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary;
+}
+
+.user-name {
+    -fx-font-weight: bold;
+}
+
+.profile-button {
+    -fx-background-color: -fx-light-grey;
+    -fx-background-radius: 20;
+    -fx-padding: 8 15;
+}
+
+.profile-button:hover {
+    -fx-background-color: -fx-mid-grey;
+}
+
+/* Navigation Bar */
+.navigation-bar {
+    -fx-background-color: white;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: -fx-mid-grey;
+    -fx-padding: 5 10;
+}
+
+.nav-button {
     -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-padding: 10;
+    -fx-text-fill: -fx-dark-grey;
+    -fx-font-weight: normal;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
 }
 
-.list-cell {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 8;
-    -fx-border-color: #e2e8f0;
-    -fx-border-width: 1.5;
-    -fx-border-radius: 8;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 8, 0.2, 0, 2);
-    -fx-padding: 15;
-    -fx-margin: 8;
+.nav-button:hover {
+    -fx-background-color: rgba(52, 152, 219, 0.1);
+    -fx-text-fill: -fx-primary;
 }
 
-.list-cell:filled:selected {
-    -fx-background-color: #2ecc71;
-    -fx-text-fill: white;
+.nav-button-active {
+    -fx-background-color: rgba(52, 152, 219, 0.15);
+    -fx-text-fill: -fx-primary;
+    -fx-font-weight: bold;
 }
 
-/* ==================== Participation Form ==================== */
-#participationForm {
+/* Content Container */
+.content-container {
     -fx-spacing: 15;
-    -fx-padding: 25;
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 12;
-    -fx-border-color: #e2e8f0;
-    -fx-border-width: 1.5;
-    -fx-border-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 8, 0.2, 0, 2);
 }
 
-.event-image {
-    -fx-border-color: #e2e8f0;
-    -fx-border-width: 1.5;
-    -fx-border-radius: 8;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0.2, 0, 2);
+/* Welcome Banner */
+.welcome-banner {
+    -fx-background-color: linear-gradient(to right, -fx-primary, -fx-primary-dark);
+    -fx-background-radius: 8;
 }
 
-.form-container .text-field {
-    -fx-pref-height: 40;
+.welcome-title {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.welcome-subtitle {
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
     -fx-font-size: 14px;
 }
 
-.form-container .button {
-    -fx-background-color: #2ecc71;
-    -fx-text-fill: white;
-    -fx-pref-width: 200;
+/* Panel Styling */
+.panel {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);
+}
+
+.panel-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.panel-header {
+    -fx-padding: 0 0 10 0;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -fx-light-grey;
+}
+
+/* Split Pane */
+.content-split-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.content-split-pane .split-pane-divider {
+    -fx-background-color: transparent;
+    -fx-padding: 0 5;
+}
+
+/* Buttons */
+.action-button {
+    -fx-background-color: -fx-light-grey;
+    -fx-background-radius: 5;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.action-button:hover {
+    -fx-background-color: -fx-mid-grey;
+}
+
+/* Search Styling */
+.search-container {
+    -fx-spacing: 5;
+    -fx-alignment: center-left;
+}
+
+.search-field {
+    -fx-background-color: -fx-light-grey;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+}
+
+.search-button {
+    -fx-background-color: -fx-light-grey;
+    -fx-background-radius: 5;
+    -fx-padding: 5 10;
+}
+
+.search-button:hover {
+    -fx-background-color: -fx-mid-grey;
+}
+
+/* List View Styling */
+.location-list-view, .event-list-view {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 5;
+    -fx-border-width: 0;
+}
+
+.location-list-view .list-cell, .event-list-view .list-cell {
+    -fx-background-color: white;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: -fx-light-grey;
+    -fx-border-width: 1;
+    -fx-margin: 0 0 5 0;
+}
+
+.location-list-view .list-cell:hover, .event-list-view .list-cell:hover {
+    -fx-background-color: -fx-light-grey;
+}
+
+.location-list-view .list-cell:selected, .event-list-view .list-cell:selected {
+    -fx-background-color: rgba(52, 152, 219, 0.1);
+    -fx-text-fill: -fx-primary;
+    -fx-border-color: -fx-primary;
+}
+
+/* Chatbot Panel */
+.chatbot-panel {
+    -fx-pref-height: 250;
+}
+
+/* Footer */
+.footer {
+    -fx-background-color: white;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: -fx-mid-grey;
+}
+
+.footer-text, .footer-version {
+    -fx-text-fill: -fx-dark-grey;
+    -fx-font-size: 12px;
+}
+
+/* ComboBox Styling */
+.sort-dropdown {
+    -fx-background-color: -fx-light-grey;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+}
+
+/* Scrollbar Styling */
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-mid-grey;
+    -fx-background-radius: 5;
 }

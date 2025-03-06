@@ -18,13 +18,16 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import services.EventService;
+import utils.CalendarApp;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ResourceBundle;
-
+import javafx.scene.control.ListCell;
 public class EventCrud implements Initializable {
 
     @FXML
@@ -49,19 +52,44 @@ public class EventCrud implements Initializable {
     @FXML
     void addevent(ActionEvent event) {
         if (validateForm()) {
+            // Create the event in your local database
             Event newEvent = new Event(
                     nameTF.getText(),
                     descriptionTF.getText(),
                     location.getId(),
                     dateDP.getValue()
             );
+
             try {
+                // Save the event to your local database
                 EventService eventService = new EventService();
                 eventService.create(newEvent);
+
+                // Create the event in Google Calendar
+                String eventTitle = newEvent.getName();
+                String eventDescription = newEvent.getDescription();
+                LocalDate eventDate = newEvent.getDate();
+
+                // Convert LocalDate to Date for Google Calendar
+                Date startDate = java.sql.Date.valueOf(eventDate);
+                Date endDate = java.sql.Date.valueOf(eventDate.plusDays(1)); // End date is start date + 1 day
+
+                // Call the CalendarApp.createEvent method
+                String eventLink = CalendarApp.createEvent(eventTitle, eventDescription, startDate, endDate);
+
+                if (eventLink != null) {
+                    System.out.println("Event created in Google Calendar: " + eventLink);
+                } else {
+                    showErrorAlert("Failed to create event in Google Calendar.");
+                }
+
+                // Refresh the ListView and clear fields
                 refreshEventListView();
-                clearFields(); // Clear fields after adding an event
+                clearFields();
             } catch (SQLException e1) {
-                showErrorAlert("Error adding event: " + e1.getMessage());
+                showErrorAlert("Error adding event to local database: " + e1.getMessage());
+            } catch (Exception e) {
+                showErrorAlert("Error creating event in Google Calendar: " + e.getMessage());
             }
         }
     }
@@ -175,8 +203,6 @@ public class EventCrud implements Initializable {
         nameTF.setText(event.getName());
         descriptionTF.setText(event.getDescription());
         dateDP.setValue(event.getDate());
-
-
     }
 
     private void selectEvent(Event selectedEvent) {
@@ -192,9 +218,8 @@ public class EventCrud implements Initializable {
         nameTF.clear();
         descriptionTF.clear();
         dateDP.setValue(null);
-
-
     }
+
     @FXML
     void modifyevent(ActionEvent event) {
         Event selectedEvent = eventLV.getSelectionModel().getSelectedItem();
@@ -249,7 +274,29 @@ public class EventCrud implements Initializable {
                 System.out.println("Event selected: " + (newSelection != null ? newSelection.getName() : "null")); // Debug statement
                 selectEvent(newSelection); // Call the dedicated selection function
             });
+
+            // Set a custom cell factory for the event ListView
+            eventLV.setCellFactory(param -> new ListCell<Event>() {
+                @Override
+                protected void updateItem(Event event, boolean empty) {
+                    super.updateItem(event, empty);
+
+                    if (empty || event == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        // Display the event name, description, date, and countdown timer
+                        String eventDetails = String.format(
+                                "Name: %s\nDescription: %s\nDate: %s\nTime Left: %s",
+                                event.getName(),
+                                event.getDescription(),
+                                event.getDate().format(DateTimeFormatter.ofPattern("dd MMM yyyy")),
+                                event.getRemainingTime()
+                        );
+                        setText(eventDetails);
+                    }
+                }
+            });
         }
     }
-
 }

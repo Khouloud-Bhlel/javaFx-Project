@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@style/EventCrud.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventCrud">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@style/EventCrud.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EventCrud">
    <children>
       <!-- Logo Image -->
       <ImageView fitHeight="140.0" fitWidth="173.0" layoutX="10.0" layoutY="10.0" preserveRatio="true">
@@ -22,24 +22,24 @@
       </Label>
 
       <!-- Subtitle for the List of Events -->
-      <Label layoutX="550.0" layoutY="100.0" styleClass="subheading" text="LIST OF EVENTS">
+      <Label layoutX="588.0" layoutY="91.0" styleClass="subheading" text="LIST OF EVENTS">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
 
       <!-- List of Events -->
-      <ListView fx:id="eventLV" layoutX="500.0" layoutY="130.0" prefHeight="300.0" prefWidth="350.0" styleClass="meal-card" />
+      <ListView fx:id="eventLV" layoutX="484.0" layoutY="132.0" prefHeight="300.0" prefWidth="350.0" styleClass="meal-card" />
 
       <!-- Form Fields -->
       <Label layoutX="50.0" layoutY="120.0" styleClass="subheading" text="NAME:" />
-      <TextField fx:id="nameTF" layoutX="150.0" layoutY="110.0" prefHeight="40.0" prefWidth="250.0" styleClass="text-field" />
+      <TextField fx:id="nameTF" layoutX="221.0" layoutY="103.0" prefHeight="40.0" prefWidth="250.0" styleClass="text-field" />
 
       <Label layoutX="50.0" layoutY="180.0" styleClass="subheading" text="DESCRIPTION:" />
-      <TextArea fx:id="descriptionTF" layoutX="150.0" layoutY="170.0" prefHeight="120.0" prefWidth="250.0" styleClass="text-area" wrapText="true" />
+      <TextArea fx:id="descriptionTF" layoutX="221.0" layoutY="170.0" prefHeight="120.0" prefWidth="250.0" styleClass="text-area" wrapText="true" />
 
       <Label layoutX="50.0" layoutY="320.0" styleClass="subheading" text="DATE:" />
-      <DatePicker fx:id="dateDP" layoutX="150.0" layoutY="310.0" prefHeight="40.0" prefWidth="250.0" styleClass="date-picker" />
+      <DatePicker fx:id="dateDP" layoutX="221.0" layoutY="300.0" prefHeight="40.0" prefWidth="250.0" styleClass="date-picker" />
 
       <!-- Buttons -->
       <Button fx:id="addButton" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" onAction="#addevent" styleClass="button" text="ADD" />
